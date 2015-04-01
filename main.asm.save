@@ -1,0 +1,114 @@
+
+
+
+global _start
+ 
+section .data
+        ; Align to the nearest 2 byte boundary, must be a power of two
+        align 2
+        ; String, which is just a collection of bytes, 0xA is newline
+        str:     db 'Hello, world!',0xA
+        strLen:  equ $-str
+ 
+section .bss
+ 
+section .text
+	%define STDIN 0
+	%define STDOUT 1
+	%macro s1 3
+	mov eax, 1
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s2 3
+	mov eax, 2
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s3 3
+	mov eax, 3
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s4 3
+	mov eax, 4
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s5 3
+	mov eax, 5
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s6 3
+	mov eax, 6
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s7 3
+	mov eax, 7
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s8 3
+	mov eax, 8
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s9 3
+	mov eax, 9
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+	%macro s10 3
+	mov eax, 10
+	mov ebx, %1
+	mov ecx, %2
+	mov edx, %3
+	int 0x80
+	%endmacro
+        _start:
+ 
+;
+;       op      dst,  src
+;
+                                ;
+	
+                                ; Call write(2) syscall:
+                     ;       ssize_t write(int fd, const void *buf, size_t count)
+        s3 STDIN,str,2
+	s4 STDOUT,str,strlen                        ;
+        mov     edx, strLen     ; Arg three: the length of the string
+        mov     ecx, str        ; Arg two: the address of the string
+        mov     ebx, 1          ; Arg one: file descriptor, in this case stdout
+        mov     eax, 4          ; Syscall number, in this case the write(2) syscall: 
+        int     0x80            ; Interrupt 0x80        
+ 
+                                ;
+                                ; Call exit(3) syscall
+                                ;       void exit(int status)
+                                ;
+        mov     ebx, 0          ; Arg one: the status
+        mov     eax, 1          ; Syscall number:
+        int     0x80
+
+
+
